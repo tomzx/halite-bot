@@ -1,5 +1,7 @@
 # Halite Bot
 
+[See my current ranking](https://halite.io/user.php?userID=3128)
+
 This is a bot for the [Halite](https://halite.io/) game, written in PHP. It was the first bot written in PHP for the game.
 
 This repository contains an archive of the different versions/iterations of the bot and a small history of the changes that improved its success rate.
@@ -36,7 +38,7 @@ This version attempts to solve the issue by radically changing the plan of attac
 This worked great, however it did not take into account a critical factor of the game: production. The bot did not have any prioritization heuristic regarding which adjacent square it should attack other than "is it the weakest". Thus, it would prefer to attack a location which had a production of 1 over with 10 if the first had a strength of 1 and the second a strength of 2.
 
 ## v7
-This version introduces its first metric/heuristic: attractiveness. The formula was very simple: $site->production / ($site->strength ?: 1). Thus, a site is more attractive the bigger its production is and the smaller its strength is.
+This version introduces its first metric/heuristic: attractiveness. The formula was very simple: `$site->production / ($site->strength ?: 1)`. Thus, a site is more attractive the bigger its production is and the smaller its strength is.
 
 This produced a significant improvement over the previous versions, but still exhibited issues recognized in previous versions, specifically that pieces which were strength capped or near strength capped would still merge with one another.
 
