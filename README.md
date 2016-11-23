@@ -42,6 +42,24 @@ This version introduces its first metric/heuristic: attractiveness. The formula 
 
 This produced a significant improvement over the previous versions, but still exhibited issues recognized in previous versions, specifically that pieces which were strength capped or near strength capped would still merge with one another.
 
+## v8 - Submitted v1 - Ranked 398 out of 615 (Bronze)
+At this point I introduced an important change: the bot now has a single parametric value. When it is invoked, it can be given a "minimum strength", a value which is used to determine the minimal strength a piece should have before it can move out to its surroundings.
+
+At the same time, an important tool is added: a test randomizer. In order to better assess the success of an iteration, it competes against its predecessors. If its performance (number of games won) is significantly higher than its predecessors, then it is considered an improvement and kept as a new iteration. The test randomizer also serves another functionality, that of determining the best parameter value to give to the bot that will run on halite.io.
+
+The test randomizer runs the "champion" (current iteration) against challengers (previous iterations). It calls the halite environment with varying map width and sizes, as well as different challengers count. It also has a mode where the challengers are always the same set, which provides more stability for parameter selection. Finally, it also provides the ability to test the current iteration against itself to further fine-tune the parameters of the bot.
+
+With this tool, I was able to run about 700k games over a period of about 16h.
+
+## v9 - Submitted v2 - Ranked ~70 out of 662 (Silver)
+This version differs from the last one by only a minor change. I finally take the time to read the rules "more properly" and determine that it is better to wait for a piece to strengthen instead of attacking its surrounding as soon as possible.
+
+With this single change, the bot is a lot stronger, jumping into a different ranking.
+
+At this point I'm starting to think that most of the local tactics have been exhausted and other strategies/approaches will have to be used. The most likely next step will be to generate some kind of "map production hotspot acquisition planning". In other words, optimize the acquisition of locations/sites based on their production rate instead of simply doing a local (looking at the four adjacents locations) selection.
+
+While thinking about this, I also had the idea that it would make sense to devise some sort of path through which pieces would travel. For instance, it is very important to keep the highly productive sites in place as long as possible. Any movement on these sites would nullify their production value.
+
 ## License
 
 The code is licensed under the [MIT license](http://choosealicense.com/licenses/mit/). See [LICENSE](LICENSE).
