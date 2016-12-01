@@ -51,7 +51,7 @@ The test randomizer runs the "champion" (current iteration) against challengers 
 
 With this tool, I was able to run about 700k games over a period of about 16h.
 
-## v9 - Submitted v2 - Ranked ~70 out of 662 (Silver)
+## v9 - Submitted v2 - Ranked ~70 (lowest 50) out of 676 (Silver)
 This version differs from the last one by only a minor change. I finally take the time to read the rules "more properly" and determine that it is better to wait for a piece to strengthen instead of attacking its surrounding as soon as possible.
 
 With this single change, the bot is a lot stronger, jumping into a different ranking.
@@ -59,6 +59,31 @@ With this single change, the bot is a lot stronger, jumping into a different ran
 At this point I'm starting to think that most of the local tactics have been exhausted and other strategies/approaches will have to be used. The most likely next step will be to generate some kind of "map production hotspot acquisition planning". In other words, optimize the acquisition of locations/sites based on their production rate instead of simply doing a local (looking at the four adjacents locations) selection.
 
 While thinking about this, I also had the idea that it would make sense to devise some sort of path through which pieces would travel. For instance, it is very important to keep the highly productive sites in place as long as possible. Any movement on these sites would nullify their production value.
+
+## v9.v1 - Submitted v3 - Ranked ~50 (lowest 39) out of 818 (Silver)
+This version was branched from the v9 version. While I attempted to explore new approaches which spawned versions v10 and upper, v9 kept being superior to them. Interestingly enough, the difference between v9 and v10 was so minor yet it made an important difference.
+
+The difference between v9 and v10 is difficult to understand at first. It relies on the fact that in one instance, the bot will attack a location if it has exactly the same amount of strength or more than that site, while in the other version, it has to have more strength than the targeted site. Thus, the difference is between attacking a site if we have equal strength or not.
+
+v9 attacked a site if it had at least the same amount of strength. v10 attacked only if it had more strength. As I said earlier, v9 kept being superior to v10, which I found a little odd. The reason I actually wrote v10 was that v9 had an issue where it would move to a target site, that site would end up with 0 strength and not owned by the bot. Thus, it would require an additional two frames before it would capture the site. The sequence would look something like
+
+| Cell | 1 | 2 | 3 | 4 | 5 |
+|------|---|---|---|---|---|
+| Mine | 5 | 0 | 1 | 0 | 1 |
+| Other| 5 | 0 | 0 | 1 | 2 |
+| Owned| 5 | 0 | 1 | 1 | 3 |
+
+While, if we waited one more turn and then attacked the target site, we wouldn't have the issue where the "other" site is inactive during frame 3 and where my cell is reset to 0 at frame 4.
+
+| Cell | 1 | 2 | 3 | 4 | 5 |
+|------|---|---|---|---|---|
+| Mine | 5 | 6 | 0 | 1 | 2 |
+| Other| 5 | 0 | 1 | 2 | 3 |
+| Owned| 5 | 6 | 1 | 3 | 5 |
+
+However, v9 was superior to v10, so there had to be a reason that the "incorrect" behavior had more value than the one I expected to result in better performance. After a bit of thinking, it became clear that it had an important purpose in the late game. At that point of the game, it becomes important to neutralize and gain territory. The purpose of the "incorrect" behavior is to neutralize a location as soon as possible, even if it means that the location will be neutral for the next frame.
+
+The reason this behavior is important is that during fights with other players, we cannot wait for our piece to get stronger. We have to act now. We also want to reduce their production rate if it is possible. An extreme example is one where one of our piece is set to attack a site with a very high production rate. If we have the same amount of strength as the target site, but our production rate is much lower, then it is likely that the next frame, the strength of this target site will have increased more than our own, making the algorithm not attack this site anymore. At this point we're at a disadvantage since the opponent now has a stronger site than we do. On the opposite end, if we attacked it at that moment, the opponent would not own the site anymore, but we would still own the site that initiated the attack. From a local point of view, we won that fight.
 
 ## License
 
